@@ -1,60 +1,33 @@
 automation:
-- alias: Office - Automatic Lights
+- alias: Bathroom Master - Automatic Lights
   description: ''
   triggers:
   - entity_id:
-    - binary_sensor.office_motion_sensors
+    - binary_sensor.bathroom_master_motion_sensors
     from: 'off'
     to: 'on'
     id: MotionOn
     trigger: state
   - entity_id:
-    - binary_sensor.office_motion_sensors
+    - binary_sensor.bathroom_master_motion_sensors
     from: 'on'
     to: 'off'
     id: MotionOff
     for:
       hours: 0
       minutes: 0
-      seconds: 0
+      seconds: 30
     trigger: state
   - trigger: state
     entity_id:
-    - light.office_group_all_lights
+    - light.a810acaa571a62d588d1d4c5afc5de31_button_5_lights
     from: 'on'
     to: 'off'
     for:
       hours: 0
-      minutes: 10
+      minutes: 5
       seconds: 0
     id: LightSource_Off_AdaptiveLighting_Reset
-  - entity_id:
-    - binary_sensor.office_motion_sensors
-    from: 'on'
-    to: 'off'
-    id: MotionIdle
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 15
-    trigger: state
-    enabled: false
-  - entity_id:
-    - sensor.apollo_mtr_1_ce9998_hallway_target_1_angle
-    id: Hallway Angle
-    below: -30
-    enabled: false
-    trigger: numeric_state
-  - entity_id:
-    - light.aqara_t1m_ceiling_main_light
-    to: 'on'
-    for:
-      hours: 0
-      minutes: 0
-      seconds: 30
-    id: Light ON 30
-    enabled: false
-    trigger: state
   conditions: []
   actions:
   - choose:
@@ -173,7 +146,7 @@ automation:
         id:
         - Light ON 30
       - condition: state
-        entity_id: binary_sensor.office_motion_sensors
+        entity_id: binary_sensor.bathroom_master_motion_sensors
         state: 'off'
       - condition: numeric_state
         entity_id: sensor.everything_presence_lite_f1c3b8_target_1_angle
@@ -185,13 +158,13 @@ automation:
           entity_id: light.aqara_t1m_ceiling_main_light
         action: light.turn_off
   variables:
-    replace_light: light.office_group_all_lights
-    replace_sensor: binary_sensor.office_motion_sensors
-    device_id: d966bfe5eaa4645f72ff45022220e12d
+    replace_light: light.a810acaa571a62d588d1d4c5afc5de31_button_5_lights
+    replace_sensor: binary_sensor.bathroom_master_motion_sensors
+    device_id: a810acaa571a62d588d1d4c5afc5de31
     button_name: button_5
-    light_source: light.office_group_all_lights
+    light_source: light.a810acaa571a62d588d1d4c5afc5de31_button_5_lights
     button_number: '{{ button_name.split(''_'')[1] }}'
     area_name: '{{area_name(trigger.entity_id) | lower | replace('' '', ''_'') }}'
   mode: single
-  '#id': '1714185396253'
+  '#id': '1760492822237'
   enabled: false

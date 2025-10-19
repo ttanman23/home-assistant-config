@@ -1,5 +1,5 @@
 automation:
-- alias: Office - Scene Controller - Button 5 - Press
+- alias: Bathroom Master - Scene Controller - Button 5 - Press
   description: ''
   triggers:
   - event_type: zwave_js_value_notification
@@ -160,7 +160,9 @@ automation:
         metadata: {}
         data: {}
         target:
-          entity_id: input_select.d966bfe5eaa4645f72ff45022220e12d_button_5_scene_input
+          entity_id: 'input_select.{{device_id}}_{{button_name}}_scene_input
+
+            '
       - action: scene.turn_on
         metadata: {}
         data: {}
@@ -193,12 +195,26 @@ automation:
       - action: adaptive_lighting.change_switch_settings
         metadata: {}
         data:
-          entity_id: switch.adaptive_lighting_office
-          prefer_rgb_color: '{{ not state_attr(''switch.adaptive_lighting_office'',
+          entity_id: 'switch.adaptive_lighting_{{area_name}}
+
+            '
+          prefer_rgb_color: '{{ not state_attr(''switch.adaptive_lighting_''~area_name,
             ''configuration'')[''prefer_rgb_color''] }}
 
             '
         alias: Toggle Prefer_RGB_Color
+      - alias: Toggle Prefer_RGB_Color
+        action: adaptive_lighting.change_switch_settings
+        metadata: {}
+        data:
+          entity_id: 'switch.adaptive_lighting_bathroom_master
+
+            '
+          prefer_rgb_color: '{{ not state_attr(''switch.adaptive_lighting_bathroom_master'',
+            ''configuration'')[''prefer_rgb_color''] }}
+
+            '
+        enabled: false
       alias: Press 4X
     - conditions:
       - condition: trigger
@@ -237,30 +253,29 @@ automation:
       alias: Press Hold - 2 - Release
     enabled: true
   trigger_variables:
-    device_id: d966bfe5eaa4645f72ff45022220e12d
+    device_id: a810acaa571a62d588d1d4c5afc5de31
     button_name: button_5
-    light_source: light.office_group_all_lights
+    light_source: light.a810acaa571a62d588d1d4c5afc5de31_button_5_lights
     button_number: '{{ button_name.split(''_'')[1] }}'
     property_key: '{{ ''00'' ~ button_number }}'
   variables:
-    room: office
     area_name: '{{ area_name(trigger.event.data.device_id) | lower | replace('' '',
       ''_'') }}'
   mode: single
-  '#id': '1712427798099'
+  '#id': '1760476939303'
   enabled: false
-- alias: Office - Scene Controller - Button 5 - LED Indicator
+- alias: Bathroom Master - Scene Controller - Button 5 - LED Indicator
   description: Toggles LED and changes colors based on Entity statuses
   triggers:
   - entity_id:
-    - light.office_group_all_lights
+    - light.a810acaa571a62d588d1d4c5afc5de31_button_5_lights
     to: 'on'
     from: 'off'
     id: Button_Source_On
     trigger: state
     enabled: true
   - entity_id:
-    - light.office_group_all_lights
+    - light.a810acaa571a62d588d1d4c5afc5de31_button_5_lights
     to: 'off'
     from: 'on'
     id: Button_Source_Off
@@ -271,14 +286,14 @@ automation:
       minutes: 0
       seconds: 1
   - entity_id:
-    - automation.office_motion_sensor
+    - automation.bathroom_master_motion_sensor
     from: 'off'
     to: 'on'
     id: AutomaticLights_On
     trigger: state
     enabled: true
   - entity_id:
-    - automation.office_motion_sensor
+    - automation.bathroom_master_motion_sensor
     from: 'on'
     to: 'off'
     id: AutomaticLights_Off
@@ -343,28 +358,28 @@ automation:
         action: zwave_js.set_config_parameter
     enabled: true
   variables:
-    replace_light: light.office_group_all_lights
-    replace_automation: automation.office_motion_sensor
-    device_id: d966bfe5eaa4645f72ff45022220e12d
+    replace_light: light.a810acaa571a62d588d1d4c5afc5de31_button_5_lights
+    replace_automation: automation.bathroom_master_motion_sensor
+    device_id: a810acaa571a62d588d1d4c5afc5de31
     button_name: button_5
     button_number: '{{ button_name.split(''_'')[1] }}'
     led_number: '{{ (button_number | int % 5) + 1 }}'
     led_switch_name: '{{ ''switch.zen32_scene_controller_'' ~device_id~ ''_button_''
       ~led_number~ ''_indication_binary'' }}'
   mode: single
-  '#id': '1726289967466'
+  '#id': '1760477189842'
   enabled: false
-- alias: Office - Scene Controller - Button 5 - Activate Scene
+- alias: Bathroom Master - Scene Controller - Button 5 - Activate Scene
   description: ''
   triggers:
   - trigger: state
     entity_id:
-    - input_select.d966bfe5eaa4645f72ff45022220e12d_button_5_scene_input
+    - input_select.a810acaa571a62d588d1d4c5afc5de31_button_5_scene_input
     id: Trigger_SceneInput
     enabled: true
   - trigger: state
     entity_id:
-    - scene.d966bfe5eaa4645f72ff45022220e12d_button_5_adaptive_lighting_reset
+    - scene.a810acaa571a62d588d1d4c5afc5de31_button_5_adaptive_lighting_reset
     to: null
     id: Trigger_AdaptiveLightingReset
     enabled: false
@@ -408,10 +423,10 @@ automation:
         entity_id: switch.adaptive_lighting_{{area_name}}
       alias: Apply Adaptive Lighting Settings to current Area
   variables:
-    device_id: d966bfe5eaa4645f72ff45022220e12d
+    device_id: a810acaa571a62d588d1d4c5afc5de31
     button_name: button_5
     button_number: '{{ button_name.split(''_'')[1] }}'
     area_name: '{{ area_name(trigger.entity_id) | lower | replace('' '', ''_'') }}'
   mode: single
-  '#id': '1757727092691'
+  '#id': '1760477049992'
   enabled: false

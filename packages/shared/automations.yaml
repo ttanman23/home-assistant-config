@@ -6,11 +6,13 @@ automation:
     entity_id:
     - input_boolean.adaptive_lighting_prefer_rgb_color_office
     - input_boolean.adaptive_lighting_prefer_rgb_color_living_room
+    - input_boolean.adaptive_lighting_prefer_rgb_color_bathroom_master
     id: toggle_changed
   - trigger: state
     entity_id:
     - switch.adaptive_lighting_office
     - switch.adaptive_lighting_living_room
+    - switch.adaptive_lighting_bathroom_master
     id: adaptive_changed
     attribute: configuration
   conditions: []
